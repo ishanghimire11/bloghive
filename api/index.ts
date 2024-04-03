@@ -1,8 +1,14 @@
-import express from "express";
+import express, {
+  ErrorRequestHandler,
+  NextFunction,
+  Request,
+  Response,
+} from "express";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
-import userRoutes from "./routes/user.route";
-import authRoutes from "./auth/auth.route";
+import userRoutes from "@/routes/user.route";
+import authRoutes from "@/auth/auth.route";
+import errorHandler from "@/utils/errorHandling";
 
 dotenv.config();
 
@@ -22,9 +28,13 @@ export const connectDB = async () => {
   }
 };
 
+connectDB();
+
 app.listen(PORT, () => {
   console.log("Server running at PORT: ", PORT);
 });
 
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
+
+app.use(errorHandler);

@@ -1,13 +1,20 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import bcrypt from "bcrypt";
-import { connectDB } from "..";
-import User from "@/models/user.model";
+import { ZodError } from "zod";
 
-export const signUp = async (req: Request, res: Response) => {
-  if (req.method === "POST" && req.body) {
+import User from "@/models/user.model";
+import { createUserSchema } from "@/validaton/validation";
+
+export const signUp = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.method === "POST") {
     try {
-      connectDB();
-      const { username, email, password } = req.body;
+      const validatedData = createUserSchema.parse(req.body);
+
+      const { username, email, password } = validatedData;
 
       const hashedPassword = bcrypt.hashSync(password, 10);
 
@@ -15,9 +22,16 @@ export const signUp = async (req: Request, res: Response) => {
 
       await newUser.save();
 
-      res.json("creation sucessful");
+      return res.json("User created successfully");
     } catch (err: any) {
-      res.status(500).json({ message: err.message });
+      if (err instanceof ZodError) {
+        return res
+          .status(400)
+          .json({
+            message: `Error in ${err.errors[0].path}. ${err.errors[0].message}`,
+          });
+      }
+      next(err);
     }
   }
 };

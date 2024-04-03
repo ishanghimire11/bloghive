@@ -9,6 +9,6 @@ export const createUserSchema = z.object({
     .min(6, { message: "Username must be at least 6 characters" }),
   email: z
     .string()
-    .min(1, { message: "This field has to be filled." })
-    .email("This is not a valid email."),
+    .min(1, { message: "Email is required" })
+    .email("Enter a valid email"),
 });
