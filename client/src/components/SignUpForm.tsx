@@ -7,6 +7,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signupFields } from "@/constants/constants";
+import axios, { AxiosError } from "axios";
 
 const SignUpForm = () => {
   const {
@@ -17,7 +18,25 @@ const SignUpForm = () => {
     resolver: zodResolver(registerUserSchema),
   });
 
-  const onSubmit: SubmitHandler<UserSignUp> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<UserSignUp> = async (data) => {
+    try {
+      const res = await axios(
+        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          data,
+        }
+      );
+      console.log(res);
+    } catch (error) {
+      if (error instanceof AxiosError) {
+        console.log("post error");
+      }
+    }
+  };
 
   return (
     <div>
@@ -32,13 +51,14 @@ const SignUpForm = () => {
             <label key={index}>
               <input
                 type={type}
+                // autoComplete="off"
                 className="w-full input input-bordered"
                 placeholder={placeholder}
                 {...register(name as ValidRegisterFieldNames)}
               />
 
               {errors[name as ValidRegisterFieldNames] && (
-                <p className="w-full mt-2 text-sm text-red-500">
+                <p className="w-full mt-2 text-sm text-error">
                   {errors[name as ValidRegisterFieldNames]?.message}
                 </p>
               )}
