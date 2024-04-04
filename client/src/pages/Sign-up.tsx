@@ -5,29 +5,41 @@ import SignUpForm from "@/components/SignUpForm";
 
 const Signup = () => {
   return (
-    <div className="h-[90dvh] py-8 px-6 flex">
-      <div className="flex h-full">
-        <div className="h-full p-16 rounded-lg bg-white/60 lg:min-w-[400px]">
-          <NavLink to={"/"} className="flex justify-center mx-auto w-fit">
-            <img src={Logo} className="text-center" />
-          </NavLink>
+    <div className="flex min-h-[90dvh]">
+      <div className="p-8 md:px-12 md:py-12 rounded-lg bg-neutral-content w-full md:min-w-[400px] md:w-fit">
+        <NavLink to={"/"} className="flex justify-center mx-auto w-fit">
+          <img src={Logo} className="text-center" />
+        </NavLink>
 
-          <p className="pt-6 mb-16 font-medium text-center">
-            Register your account
+        <h2 className="pt-6 mb-16 text-2xl font-medium text-center">
+          Register your account
+        </h2>
+
+        <div>
+          <button className="flex items-center w-full mx-auto btn gap-x-2">
+            <img src={googleIcon} alt="" className="object-cover w-5 h-5" />
+            Sign up with Google
+          </button>
+
+          <p className="my-8 text-center opacity-70">Or</p>
+        </div>
+
+        <SignUpForm />
+
+        <div>
+          <p className="mt-4 text-sm text-center">
+            Already have an account?{" "}
+            <NavLink
+              to={"/login"}
+              className="underline text-error underline-offset-2"
+            >
+              Login
+            </NavLink>
           </p>
-
-          <div className="mb-16">
-            <button className="flex items-center w-full mx-auto btn gap-x-2">
-              <img src={googleIcon} alt="" className="object-cover w-5 h-5" />
-              Sign up with Google
-            </button>
-
-            <p className="mt-6 text-center">Or</p>
-          </div>
-
-          <SignUpForm />
         </div>
       </div>
+
+      <div className="flex-1 hidden bg-center bg-no-repeat bg-cover bg-signup-background md:block"></div>
     </div>
   );
 };

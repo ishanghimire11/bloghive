@@ -2,7 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        "signup-background": "url('@/assets/5585062.jpg')",
+      },
+    },
   },
   daisyui: {
     themes: ["dark", "retro"],

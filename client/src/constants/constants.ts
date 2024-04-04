@@ -18,7 +18,7 @@ export const signupFields: SignUpField[] = [
   {
     name: "password",
     label: "Password",
-    type: "text",
+    type: "password",
     placeholder: "Password",
     required: true,
   },

@@ -1,9 +1,5 @@
-import express, {
-  ErrorRequestHandler,
-  NextFunction,
-  Request,
-  Response,
-} from "express";
+import express from "express";
+import cors from "cors";
 import dotenv from "dotenv";
 import mongoose from "mongoose";
 import userRoutes from "@/routes/user.route";
@@ -29,6 +25,12 @@ export const connectDB = async () => {
 };
 
 connectDB();
+
+app.use(
+  cors({
+    origin: true,
+  })
+);
 
 app.listen(PORT, () => {
   console.log("Server running at PORT: ", PORT);
