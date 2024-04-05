@@ -15,7 +15,7 @@ const Header = () => {
   const onSubmit: SubmitHandler<HeaderSearch> = (data) => console.log(data);
 
   return (
-    <div className="px-6 py-5 border-b sm:flex sm:gap-4 sm:items-center sm:justify-between sm:flex-row border-b-base-300">
+    <header className="px-6 py-5 border-b sm:flex sm:gap-4 sm:items-center sm:justify-between sm:flex-row border-b-base-300">
       <div className={"inline-block w-1/2 sm:w-fit sm:block"}>
         <NavLink to={"/"}>
           <img src={Logo} />
@@ -63,7 +63,7 @@ const Header = () => {
           <span>Login</span>
         </button>
       </div>
-    </div>
+    </header>
   );
 };
 

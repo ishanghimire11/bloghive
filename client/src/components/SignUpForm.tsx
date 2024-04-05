@@ -1,3 +1,4 @@
+import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,7 +10,7 @@ import {
   registerUserSchema,
 } from "@/validation/validation";
 import { signupFields } from "@/constants/constants";
-import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
   const [responseError, setResponseError] = useState<{
@@ -19,6 +20,8 @@ const SignUpForm = () => {
     hasError: false,
     error: null,
   });
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -40,7 +43,9 @@ const SignUpForm = () => {
           data,
         }
       );
-      console.log(res);
+      if (res.status === 200) {
+        navigate("/sign-in");
+      }
     } catch (error) {
       if (error instanceof AxiosError) {
         return setResponseError({ hasError: true, error });
@@ -76,9 +81,9 @@ const SignUpForm = () => {
           );
         })}
         {responseError.hasError && (
-          <p className="w-full mt-2 text-sm text-error">
+          <div className="w-full mt-2 text-sm text-error">
             {responseError.error.response?.data?.message}
-          </p>
+          </div>
         )}
         <button type="submit" className="mt-4 btn btn-secondary">
           Submit

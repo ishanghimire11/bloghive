@@ -21,14 +21,14 @@ const Signup = () => {
             Sign up with Google
           </button>
 
-          <p className="my-8 text-center opacity-70">Or</p>
+          <p className="my-8 text-center opacity-70 divider">OR</p>
         </div>
 
         <SignUpForm />
 
         <div>
           <p className="mt-4 text-sm text-center">
-            Already have an account?{" "}
+            Already have an account?
             <NavLink
               to={"/login"}
               className="underline text-error underline-offset-2"
