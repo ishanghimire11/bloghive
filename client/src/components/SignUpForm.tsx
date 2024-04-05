@@ -1,15 +1,25 @@
+import axios, { AxiosError } from "axios";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { UserSignUp } from "@/types/types";
 import {
   RegisterUserSchema,
   ValidRegisterFieldNames,
   registerUserSchema,
 } from "@/validation/validation";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { signupFields } from "@/constants/constants";
-import axios, { AxiosError } from "axios";
+import { useState } from "react";
 
 const SignUpForm = () => {
+  const [responseError, setResponseError] = useState<{
+    hasError: boolean;
+    error: any;
+  }>({
+    hasError: false,
+    error: null,
+  });
+
   const {
     register,
     handleSubmit,
@@ -33,8 +43,9 @@ const SignUpForm = () => {
       console.log(res);
     } catch (error) {
       if (error instanceof AxiosError) {
-        console.log("post error");
+        return setResponseError({ hasError: true, error });
       }
+      console.log(error);
     }
   };
 
@@ -51,7 +62,6 @@ const SignUpForm = () => {
             <label key={index}>
               <input
                 type={type}
-                // autoComplete="off"
                 className="w-full input input-bordered"
                 placeholder={placeholder}
                 {...register(name as ValidRegisterFieldNames)}
@@ -65,7 +75,11 @@ const SignUpForm = () => {
             </label>
           );
         })}
-
+        {responseError.hasError && (
+          <p className="w-full mt-2 text-sm text-error">
+            {responseError.error.response?.data?.message}
+          </p>
+        )}
         <button type="submit" className="mt-4 btn btn-secondary">
           Submit
         </button>

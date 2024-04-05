@@ -16,6 +16,20 @@ export const signUp = async (
 
       const { username, email, password } = validatedData;
 
+      const existingUsername = await User.findOne({ username: username });
+      if (existingUsername) {
+        return res.status(400).json({
+          message: "Username already exists",
+        });
+      }
+
+      const existingEmail = await User.findOne({ email: email });
+      if (existingEmail) {
+        return res.status(400).json({
+          message: "Email already exists",
+        });
+      }
+
       const hashedPassword = bcrypt.hashSync(password, 10);
 
       const newUser = new User({ username, email, password: hashedPassword });
@@ -25,11 +39,9 @@ export const signUp = async (
       return res.json("User created successfully");
     } catch (err: any) {
       if (err instanceof ZodError) {
-        return res
-          .status(400)
-          .json({
-            message: `Error in ${err.errors[0].path}. ${err.errors[0].message}`,
-          });
+        return res.status(400).json({
+          message: `Error in ${err.errors[0].path}. ${err.errors[0].message}`,
+        });
       }
       next(err);
     }
