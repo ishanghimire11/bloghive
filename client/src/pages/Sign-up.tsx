@@ -18,7 +18,7 @@ const Signup = () => {
         <div>
           <button className="flex items-center w-full mx-auto btn gap-x-2">
             <img src={googleIcon} alt="" className="object-cover w-5 h-5" />
-            Sign up with Google
+            Continue with Google
           </button>
 
           <p className="my-8 text-center opacity-70 divider">OR</p>
@@ -28,9 +28,9 @@ const Signup = () => {
 
         <div>
           <p className="mt-4 text-sm text-center">
-            Already have an account?
+            Already have an account?{" "}
             <NavLink
-              to={"/login"}
+              to={"/sign-in"}
               className="underline text-error underline-offset-2"
             >
               Login

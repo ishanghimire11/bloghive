@@ -58,10 +58,13 @@ const Header = () => {
             <span className="text-red-500">Add a search query</span>
           )} */}
         </form>
-        <button className="hidden btn btn-primary sm:flex sm:gap-x-2 ">
+        <NavLink
+          to="/sign-in"
+          className="hidden btn btn-primary sm:flex sm:gap-x-2 "
+        >
           <LogInIcon />
           <span>Login</span>
-        </button>
+        </NavLink>
       </div>
     </header>
   );
