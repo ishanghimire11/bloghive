@@ -1,4 +1,4 @@
-import { SignUpField } from "@/types/types";
+import { SignUpField, SignInField } from "@/types/types";
 
 export const signupFields: SignUpField[] = [
   {
@@ -8,6 +8,23 @@ export const signupFields: SignUpField[] = [
     placeholder: "Username",
     required: true,
   },
+  {
+    name: "email",
+    label: "Email",
+    type: "email",
+    placeholder: "Email address",
+    required: true,
+  },
+  {
+    name: "password",
+    label: "Password",
+    type: "password",
+    placeholder: "Password",
+    required: true,
+  },
+];
+
+export const signinFields: SignInField[] = [
   {
     name: "email",
     label: "Email",
