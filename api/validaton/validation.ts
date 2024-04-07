@@ -12,3 +12,5 @@ export const createUserSchema = z.object({
     .min(1, { message: "Email is required" })
     .email("Enter a valid email"),
 });
+
+export type UserSchema = z.infer<typeof createUserSchema>;
