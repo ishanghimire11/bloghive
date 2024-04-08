@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios, { AxiosError } from "axios";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Eye, EyeOff } from "lucide-react";
 
 import { UserSignUp } from "@/types/types";
 import {
@@ -20,6 +21,8 @@ const SignUpForm = () => {
     hasError: false,
     error: null,
   });
+
+  const [isShowingPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
 
@@ -64,13 +67,27 @@ const SignUpForm = () => {
           const { placeholder, name, type } = field;
 
           return (
-            <label key={index}>
+            <label key={index} className="relative">
               <input
-                type={type}
-                className="w-full input input-bordered"
+                type={isShowingPassword ? "text" : type}
+                className={`w-full input input-bordered ${
+                  name === "password" && "pr-10"
+                }`}
                 placeholder={placeholder}
                 {...register(name as ValidRegisterFieldNames)}
               />
+
+              {name === "password" && (
+                <label className="absolute top-0 translate-y-full right-4 swap swap-rotate">
+                  <input
+                    type="checkbox"
+                    onChange={() => setShowPassword((prev) => !prev)}
+                  />
+
+                  <Eye className="w-4 h-4 swap-on" />
+                  <EyeOff className="w-4 h-4 swap-off" />
+                </label>
+              )}
 
               {errors[name as ValidRegisterFieldNames] && (
                 <p className="w-full mt-2 text-sm text-error">

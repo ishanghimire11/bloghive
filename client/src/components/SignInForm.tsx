@@ -4,6 +4,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Eye, EyeOff } from "lucide-react";
 
+import { loginSuccess, loginStart, loginFailure } from "@/redux/user/userSlice";
+
 import { signinFields } from "@/constants/constants";
 import { UserSignIn } from "@/types/types";
 import {
@@ -11,6 +13,7 @@ import {
   ValidLoginFieldNames,
   loginUserSchema,
 } from "@/validation/validation";
+import { useDispatch } from "react-redux";
 
 const SignInForm = () => {
   const [responseError, setResponseError] = useState<{
@@ -20,6 +23,8 @@ const SignInForm = () => {
     hasError: false,
     error: null,
   });
+
+  const dispatch = useDispatch();
 
   const [isShowingPassword, setShowPassword] = useState(false);
 
@@ -32,6 +37,13 @@ const SignInForm = () => {
   });
 
   const onSubmit: SubmitHandler<UserSignIn> = async (data) => {
+    setResponseError({
+      hasError: false,
+      error: null,
+    });
+
+    dispatch(loginStart());
+
     try {
       const res = await axios(
         `${import.meta.env.VITE_API_URL}/api/auth/signin`,
@@ -44,6 +56,7 @@ const SignInForm = () => {
         }
       );
       console.log(res.data);
+      // dispatch(loginSuccess(res.data));
     } catch (error) {
       if (error instanceof AxiosError) {
         return setResponseError({ hasError: true, error });
