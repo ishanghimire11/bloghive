@@ -28,3 +28,9 @@ export interface SignInField {
   placeholder: string;
   required: boolean;
 }
+
+export interface UserState {
+  currentUser: null | {};
+  error: null | UserSignIn;
+  loading: boolean;
+}
