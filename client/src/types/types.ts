@@ -6,6 +6,7 @@ export type UserSignUp = {
   email: string;
   password: string;
   username: string;
+  photoUrl?: string;
 };
 
 export interface SignUpField {
