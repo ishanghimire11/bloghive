@@ -94,3 +94,51 @@ export const SignIn = async (
     return res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const Google = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { username, googlePhotoURL, email } = req.body;
+
+    const foundUser = await User.findOne({ email });
+
+    // @ts-ignore
+    const { password: foundUserPassword, ...rest } = foundUser._doc;
+
+    if (foundUser) {
+      const accessToken = jwt.sign(
+        {
+          id: rest._id,
+        },
+        `${process.env.JWT_SECRET_KEY}`
+      );
+
+      return res
+        .status(200)
+        .cookie("accessToken", accessToken, {
+          httpOnly: true,
+        })
+        .json(rest);
+    }
+    const generatedPassword = Math.random().toString(36).slice(-8);
+    const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+    const newUser = new User({
+      username:
+        username.toLowerCase().split(" ").join() +
+        Math.random().toString(9).slice(-5),
+      email,
+      password: hashedPassword,
+      photoUrl: googlePhotoURL,
+    });
+
+    await newUser.save();
+
+    return res.json("User created successfully");
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+};
