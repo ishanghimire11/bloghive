@@ -1,8 +1,15 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
+
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff } from "lucide-react";
+
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { loginFailure, loginStart, loginSuccess } from "@/redux/user/userSlice";
+
+import { Eye, EyeOff, Loader2Icon } from "lucide-react";
 
 import { UserSignUp } from "@/types/types";
 import {
@@ -11,20 +18,15 @@ import {
   registerUserSchema,
 } from "@/validation/validation";
 import { signupFields } from "@/constants/constants";
-import { useNavigate } from "react-router-dom";
 
 const SignUpForm = () => {
-  const [responseError, setResponseError] = useState<{
-    hasError: boolean;
-    error: any;
-  }>({
-    hasError: false,
-    error: null,
-  });
-
   const [isShowingPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
+
+  const { loading } = useSelector((state: RootState) => state.user);
+
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -35,6 +37,8 @@ const SignUpForm = () => {
   });
 
   const onSubmit: SubmitHandler<UserSignUp> = async (data) => {
+    dispatch(loginStart());
+
     try {
       const res = await axios(
         `${import.meta.env.VITE_API_URL}/api/auth/signup`,
@@ -47,13 +51,14 @@ const SignUpForm = () => {
         }
       );
       if (res.status === 200) {
+        dispatch(loginSuccess(res.data));
         navigate("/sign-in");
       }
-    } catch (error) {
+    } catch (error: any) {
       if (error instanceof AxiosError) {
-        return setResponseError({ hasError: true, error });
+        return dispatch(loginFailure(error.response?.data.message));
       }
-      console.log(error);
+      return dispatch(loginFailure(error.message));
     }
   };
 
@@ -97,12 +102,13 @@ const SignUpForm = () => {
             </label>
           );
         })}
-        {responseError.hasError && (
-          <div className="w-full mt-2 text-sm text-error">
-            {responseError.error.response?.data?.message}
-          </div>
-        )}
-        <button type="submit" className="mt-4 btn btn-secondary">
+
+        <button
+          type="submit"
+          className="flex items-center justify-center mt-4 btn btn-secondary gap-x-2"
+          disabled={loading}
+        >
+          {loading && <Loader2Icon className="w-5 h-5 animate-spin" />}
           Submit
         </button>
       </form>

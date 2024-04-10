@@ -31,6 +31,6 @@ export interface SignInField {
 
 export interface UserState {
   currentUser: null | {};
-  error: null | UserSignIn;
+  error: null | string;
   loading: boolean;
 }
