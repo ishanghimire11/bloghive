@@ -8,6 +8,7 @@ import { AlertCircleIcon } from "lucide-react";
 import SignInForm from "@/components/SignInForm";
 import Logo from "@/assets/logo.svg";
 import googleIcon from "@/assets/google.png";
+import GoogleOAuth from "@/components/GoogleOAuth";
 
 const Signin = () => {
   const { error } = useSelector((state: RootState) => state.user);
@@ -22,10 +23,7 @@ const Signin = () => {
         <h2 className="pt-6 mb-16 text-2xl font-medium text-center">Sign In</h2>
 
         <div>
-          <button className="flex items-center w-full mx-auto btn gap-x-2">
-            <img src={googleIcon} alt="" className="object-cover w-5 h-5" />
-            Continue with Google
-          </button>
+          <GoogleOAuth />
 
           <p className="my-8 text-center opacity-70 divider">OR</p>
         </div>
