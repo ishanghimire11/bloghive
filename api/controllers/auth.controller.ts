@@ -105,10 +105,9 @@ export const Google = async (
 
     const foundUser = await User.findOne({ email });
 
-    // @ts-ignore
-    const { password: foundUserPassword, ...rest } = foundUser._doc;
-
     if (foundUser) {
+      // @ts-ignore
+      const { password: foundUserPassword, ...rest } = foundUser._doc;
       const accessToken = jwt.sign(
         {
           id: rest._id,
@@ -138,7 +137,6 @@ export const Google = async (
 
     return res.json("User created successfully");
   } catch (error) {
-    console.error(error);
     return res.status(500).json({ message: "Internal server error" });
   }
 };

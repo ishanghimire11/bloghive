@@ -5,9 +5,9 @@ import { RootState } from "@/redux/store";
 
 import { AlertCircleIcon } from "lucide-react";
 
-import Logo from "@/assets/logo.svg";
-import googleIcon from "@/assets/google.png";
 import SignUpForm from "@/components/SignUpForm";
+import GoogleOAuth from "@/components/GoogleOAuth";
+import Logo from "@/assets/logo.svg";
 
 const Signup = () => {
   const { error } = useSelector((state: RootState) => state.user);
@@ -24,10 +24,7 @@ const Signup = () => {
         </h2>
 
         <div>
-          <button className="flex items-center w-full mx-auto btn gap-x-2">
-            <img src={googleIcon} alt="" className="object-cover w-5 h-5" />
-            Continue with Google
-          </button>
+          <GoogleOAuth />
 
           <p className="my-8 text-center opacity-70 divider">OR</p>
         </div>

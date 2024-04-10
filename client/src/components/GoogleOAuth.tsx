@@ -39,6 +39,7 @@ const GoogleOAuth = () => {
         navigate("/");
       }
     } catch (error: any) {
+      console.error(error);
       dispatch(loginFailure("Something went wrong"));
     }
   };
