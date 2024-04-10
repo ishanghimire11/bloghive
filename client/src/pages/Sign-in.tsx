@@ -6,9 +6,8 @@ import { RootState } from "@/redux/store";
 import { AlertCircleIcon } from "lucide-react";
 
 import SignInForm from "@/components/SignInForm";
-import Logo from "@/assets/logo.svg";
-import googleIcon from "@/assets/google.png";
 import GoogleOAuth from "@/components/GoogleOAuth";
+import Logo from "@/assets/logo.svg";
 
 const Signin = () => {
   const { error } = useSelector((state: RootState) => state.user);

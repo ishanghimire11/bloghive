@@ -16,6 +16,11 @@ const userSchema = new Schema(
       type: String,
       required: true,
     },
+    photoUrl: {
+      type: String,
+      default:
+        "https://avatarairlines.com/wp-content/uploads/2020/05/Female-Placeholder.png",
+    },
   },
   { timestamps: true }
 );
