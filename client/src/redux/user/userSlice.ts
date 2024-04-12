@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 
-import { UserState } from "@/types/types";
+import { ICurrentUser, UserState } from "@/types/types";
 
 const initialState: UserState = {
   currentUser: null,
@@ -19,7 +19,10 @@ export const userSlice = createSlice({
     },
     loginSuccess: (state, action: PayloadAction<string>) => {
       state.loading = false;
-      state.currentUser = action.payload;
+      state.error = null;
+      if (action.payload) {
+        state.currentUser = action.payload as unknown as ICurrentUser;
+      }
     },
     loginFailure: (state, action: PayloadAction<string>) => {
       state.loading = false;
