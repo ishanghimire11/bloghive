@@ -31,7 +31,17 @@ export interface SignInField {
 }
 
 export interface UserState {
-  currentUser: null | {};
+  currentUser: ICurrentUser | null;
   error: null | string;
   loading: boolean;
+}
+
+export interface ICurrentUser {
+  createdAt: string;
+  email: string;
+  photoUrl: string;
+  updatedAt: string;
+  username: string;
+  _id: string;
+  __v: number;
 }
