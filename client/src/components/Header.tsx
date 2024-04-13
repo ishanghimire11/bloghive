@@ -16,7 +16,10 @@ const Header = () => {
   const { register, handleSubmit } = useForm<HeaderSearch>();
   const onSubmit: SubmitHandler<HeaderSearch> = (data) => console.log(data);
 
-  console.log(currentUser);
+  const handleLogOut = () => {
+    try {
+    } catch (err) {}
+  };
 
   return (
     <header className="px-6 py-5 border-b sm:flex sm:gap-4 sm:items-center sm:justify-between sm:flex-row border-b-base-300">
@@ -66,6 +69,9 @@ const Header = () => {
               <img
                 src={currentUser.photoUrl}
                 className="w-12 h-12 rounded-full"
+                width={40}
+                height={40}
+                alt="user"
               />
             </summary>
             <div className="p-2 shadow-md menu dropdown-content z-[1] bg-base-100 rounded-box space-y-6 max-w-fit min-w-fit w-fit">
@@ -74,6 +80,9 @@ const Header = () => {
                   <img
                     src={currentUser.photoUrl}
                     className="w-full h-full rounded-full"
+                    width={40}
+                    height={40}
+                    alt="user"
                   />
                 </div>
 
@@ -82,7 +91,21 @@ const Header = () => {
                   <p>{currentUser.email}</p>
                 </div>
               </div>
-              <button className="flex items-center justify-center btn btn-primary gap-x-2">
+              <div className="py-2 my-2 border-y border-y-base-300">
+                <NavLink
+                  to={"/dashboard"}
+                  className={
+                    "p-3 inline-block w-full hover:bg-base-200 rounded-lg"
+                  }
+                >
+                  Dashboard
+                </NavLink>
+              </div>
+              <button
+                type="button"
+                className="flex items-center justify-center btn btn-primary gap-x-2"
+                onClick={() => handleLogOut()}
+              >
                 <LogOutIcon /> Logout
               </button>
             </div>

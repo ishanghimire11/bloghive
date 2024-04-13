@@ -14,12 +14,14 @@ const Signin = () => {
 
   return (
     <div className="flex min-h-[90dvh]">
-      <div className="p-6 md:px-12 md:py-12 rounded-lg bg-neutral-content w-full md:min-w-[400px] md:w-fit">
+      <div className="py-12 px-6 md:px-12 md:py-12 rounded-lg bg-neutral-content w-full md:min-w-[400px] md:w-fit">
         <NavLink to={"/"} className="flex justify-center mx-auto w-fit">
           <img src={Logo} className="text-center" />
         </NavLink>
 
-        <h2 className="pt-6 mb-16 text-2xl font-medium text-center">Sign In</h2>
+        <h2 className="pt-6 mb-12 text-2xl font-medium text-center md:mb-16">
+          Sign In
+        </h2>
 
         <div>
           <GoogleOAuth />

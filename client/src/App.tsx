@@ -10,6 +10,7 @@ import Projects from "@/pages/Projects";
 import Signin from "@/pages/Sign-in";
 import Signup from "@/pages/Sign-up";
 import NotFound from "@/components/404";
+import PrivateRoute from "@/components/PrivateRoute";
 
 const App = () => {
   return (
@@ -19,7 +20,9 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
-          <Route path="/dashboard" element={<Dashboard />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Route>
           <Route path="/projects" element={<Projects />} />
           <Route path="/sign-in" element={<Signin />} />
           <Route path="/sign-up" element={<Signup />} />
