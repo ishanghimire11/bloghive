@@ -68,7 +68,7 @@ const Header = () => {
             <summary className="p-0 m-1 rounded-full shadow-none btn w-fit">
               <img
                 src={currentUser.photoUrl}
-                className="w-12 h-12 rounded-full"
+                className="object-cover h-12 rounded-full w-14 sm:w-12"
                 width={40}
                 height={40}
                 alt="user"
@@ -79,7 +79,7 @@ const Header = () => {
                 <div className="w-10 h-10">
                   <img
                     src={currentUser.photoUrl}
-                    className="w-full h-full rounded-full"
+                    className="object-cover w-full h-full rounded-full"
                     width={40}
                     height={40}
                     alt="user"

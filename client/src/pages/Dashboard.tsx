@@ -1,23 +1,13 @@
-import { useEffect, useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { useState } from "react";
+import { Profile, Tabs } from "@/components/Dashboard";
 
 const Dashboard = () => {
   const [currentTab, setCurrentTab] = useState("");
-  const location = useLocation();
-  const params = new URLSearchParams(location.search);
-
-  useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const tab = params.get("tab");
-    setCurrentTab(tab || "");
-  }, [currentTab]);
 
   return (
-    <div>
-      <aside>
-        <NavLink to={"/dashboard?tab=profile"}>Profile</NavLink>
-        <NavLink to={"/dashboard?tab=posts"}>Posts</NavLink>
-      </aside>
+    <div className="px-6 py-12">
+      <Tabs currentTab={currentTab} setCurrentTab={setCurrentTab} />
+      <div className="py-12">{currentTab === "profile" && <Profile />}</div>
     </div>
   );
 };
