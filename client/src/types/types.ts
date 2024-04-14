@@ -45,3 +45,8 @@ export interface ICurrentUser {
   _id: string;
   __v: number;
 }
+
+export type DashboardTabsProps = {
+  currentTab: string;
+  setCurrentTab: React.Dispatch<React.SetStateAction<string>>;
+};
