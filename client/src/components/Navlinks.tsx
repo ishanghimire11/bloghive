@@ -1,11 +1,7 @@
+import { NavLink } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { LogInIcon } from "lucide-react";
-import React from "react";
-import { useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
-
-const navLinkHover =
-  "lg:relative lg:w-fit lg:block lg:after:block lg:after:content-[''] lg:after:absolute lg:after:h-[2px] lg:after:bg-black lg:after:w-full lg:after:scale-x-0 lg:after:hover:scale-x-100 lg:after:transition lg:after:duration-300 lg:after:origin-left";
 
 const Navlinks = () => {
   const { currentUser } = useSelector((state: RootState) => state.user);
