@@ -1,5 +1,5 @@
 import { DashboardTabsProps } from "@/types/types";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 export const Tabs = ({ currentTab, setCurrentTab }: DashboardTabsProps) => {
