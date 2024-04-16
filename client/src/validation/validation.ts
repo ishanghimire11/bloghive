@@ -34,3 +34,5 @@ export const loginUserSchema = z.object({
 export type LoginUserSchema = z.infer<typeof loginUserSchema>;
 
 export type ValidLoginFieldNames = "password" | "email";
+
+// ------------ PROFILE --------------- //
