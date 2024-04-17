@@ -13,11 +13,16 @@ export const registerUserSchema = z.object({
     .string()
     .min(1, { message: "Email is required" })
     .email("Enter a valid email"),
+  photoUrl: z.string(),
 });
 
 export type RegisterUserSchema = z.infer<typeof registerUserSchema>;
 
-export type ValidRegisterFieldNames = "username" | "password" | "email";
+export type ValidRegisterFieldNames =
+  | "username"
+  | "password"
+  | "email"
+  | "photoUrl";
 
 // ------------ SIGN IN --------------- //
 
