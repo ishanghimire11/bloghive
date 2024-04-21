@@ -34,7 +34,9 @@ export const Profile = () => {
   const [imageUploadProgress, setImageUploadProgress] = useState<number | null>(
     null
   );
+  const [imageFileUploading, setImageFileUploading] = useState<boolean>(false);
   const [imageUploadError, setImageUploadError] = useState<string>("");
+  const [userUpdateSuccess, setUserUpdateSuccess] = useState<string>("");
   const filePickRef = useRef<HTMLInputElement | null>(null);
 
   const { currentUser, error, loading } = useSelector(
@@ -49,6 +51,7 @@ export const Profile = () => {
   };
 
   const uploadImage = async () => {
+    setImageFileUploading(true);
     const storage = getStorage(app);
     if (imageFiles) {
       const fileName = new Date().getTime() + imageFiles.name;
@@ -69,6 +72,7 @@ export const Profile = () => {
         async () => {
           const downloadUrl = await getDownloadURL(uploadTask.snapshot.ref);
           setImageUrl(downloadUrl);
+          setImageFileUploading(false);
         }
       );
     }
@@ -79,6 +83,22 @@ export const Profile = () => {
       uploadImage();
     }
   }, [imageFiles]);
+
+  const handleUserUpdateAlert = (status: string) => {
+    if (status === "success") {
+      setUserUpdateSuccess("success");
+      setTimeout(() => {
+        setUserUpdateSuccess("");
+      }, 3000);
+    }
+
+    if (status === "error") {
+      setUserUpdateSuccess("error");
+      setTimeout(() => {
+        setUserUpdateSuccess("");
+      }, 3000);
+    }
+  };
 
   const {
     register,
@@ -106,7 +126,6 @@ export const Profile = () => {
       return;
     }
 
-    // Check file type
     const [mainType, subType] = type.split("/");
     if (mainType !== "image") {
       setImageUploadError("Please upload an image file");
@@ -120,8 +139,6 @@ export const Profile = () => {
   const onSubmit: SubmitHandler<UpdateUserSchema> = async (values) => {
     const userPhotoUrl = imageUrl || values.photoUrl;
 
-    console.log(userPhotoUrl);
-
     const formData = { ...values, photoUrl: userPhotoUrl };
     try {
       dispatch(updateStart());
@@ -131,14 +148,18 @@ export const Profile = () => {
         data: formData,
         withCredentials: true,
       });
+
       console.log(res.data);
+
       if (res.status === 200) {
         dispatch(updateSuccess(res.data));
-        window.location.reload();
+        handleUserUpdateAlert("success");
+        // window.location.reload();
       }
     } catch (err) {
       console.log(err);
       dispatch(updateFailure(err as string));
+      handleUserUpdateAlert("error");
     }
   };
 
@@ -216,7 +237,7 @@ export const Profile = () => {
         <button
           type="submit"
           className="flex items-center justify-center w-full mt-4 btn btn-secondary gap-x-2"
-          disabled={loading}
+          disabled={loading || imageFileUploading}
         >
           {loading && <Loader2Icon className="w-5 h-5 animate-spin" />}
           Submit
@@ -229,6 +250,45 @@ export const Profile = () => {
           {loading && <Loader2Icon className="w-5 h-5 animate-spin" />}
           Delete Account
         </button>
+        {userUpdateSuccess === "success" && (
+          <div
+            role="alert"
+            className="absolute alert alert-success top-10 w-fit"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 stroke-current shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Account Updated Sucessfullly</span>
+          </div>
+        )}
+        {userUpdateSuccess === "error" && (
+          <div role="alert" className="absolute alert alert-error top-10 w-fit">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="w-6 h-6 stroke-current shrink-0"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+              />
+            </svg>
+            <span>Error! Account update failed.</span>
+          </div>
+        )}
         <dialog id="delete-profile" className="modal">
           <div className="modal-box">
             <h3 className="text-lg font-bold">Delete Account?</h3>
