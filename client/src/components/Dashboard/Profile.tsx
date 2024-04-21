@@ -1,11 +1,20 @@
 import { useEffect, useRef, useState } from "react";
+import axios from "axios";
 import { useSelector } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, Loader2Icon, PlusIcon } from "lucide-react";
-import { RootState } from "@/redux/store";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+
+import { app } from "@/firebase";
+import { RootState } from "@/redux/store";
+import {
+  updateSuccess,
+  updateFailure,
+  updateStart,
+} from "@/redux/user/userSlice";
+import { UseDispatch } from "react-redux";
 
 import { signupFields } from "@/constants/constants";
 import {
@@ -19,7 +28,6 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { app } from "@/firebase";
 
 export const Profile = () => {
   const [imageFiles, setImageFiles] = useState<File | null>(null);
@@ -33,6 +41,7 @@ export const Profile = () => {
   const { currentUser, error, loading } = useSelector(
     (state: RootState) => state.user
   );
+  const dispatch = useDispatch();
 
   const defaultValues = {
     username: (currentUser && currentUser.username) || "",
@@ -109,8 +118,18 @@ export const Profile = () => {
     setImageFiles(selectedFile);
   };
 
-  const onSubmit: SubmitHandler<RegisterUserSchema> = (data) =>
-    console.log(data);
+  const onSubmit: SubmitHandler<RegisterUserSchema> = async (data) => {
+    const userPhotoUrl = imageUrl || data.photoUrl;
+
+    const formData = { ...data, photoUrl: userPhotoUrl };
+    console.log(document.cookie);
+    try {
+      dispatch(updateStart);
+      const res = await axios.put(`/api/users/update/${currentUser?._id},`);
+    } catch (err) {
+      dispatch(updateFailure);
+    }
+  };
 
   return (
     <div>
@@ -159,7 +178,7 @@ export const Profile = () => {
         {imageUploadError && (
           <div className="flex items-center w-full p-4 pl-6 text-sm leading-none rounded-lg text-error bg-error/15 gap-x-2">
             <AlertCircleIcon className="w-5 h-5" />
-            <span>{imageUploadError}</span>npm 
+            <span>{imageUploadError}</span>npm
           </div>
         )}
 
