@@ -159,7 +159,7 @@ export const Profile = () => {
         {imageUploadError && (
           <div className="flex items-center w-full p-4 pl-6 text-sm leading-none rounded-lg text-error bg-error/15 gap-x-2">
             <AlertCircleIcon className="w-5 h-5" />
-            <span>{imageUploadError}</span>
+            <span>{imageUploadError}</span>npm 
           </div>
         )}
 

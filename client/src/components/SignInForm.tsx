@@ -16,6 +16,7 @@ import {
   ValidLoginFieldNames,
   loginUserSchema,
 } from "@/validation/validation";
+import { useNavigate } from "react-router-dom";
 
 const SignInForm = () => {
   const [isShowingPassword, setShowPassword] = useState(false);
@@ -23,6 +24,8 @@ const SignInForm = () => {
   const { loading } = useSelector((state: RootState) => state.user);
 
   const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const {
     register,
@@ -47,6 +50,7 @@ const SignInForm = () => {
         }
       );
       dispatch(loginSuccess(res.data));
+      navigate("/dashboard?tab=profile");
     } catch (error: any) {
       if (error instanceof AxiosError) {
         return dispatch(loginFailure(error.response?.data.message));
