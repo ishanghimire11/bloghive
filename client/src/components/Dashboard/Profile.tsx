@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { AlertCircleIcon, Loader2Icon, PlusIcon } from "lucide-react";
@@ -122,12 +122,19 @@ export const Profile = () => {
     const userPhotoUrl = imageUrl || data.photoUrl;
 
     const formData = { ...data, photoUrl: userPhotoUrl };
-    console.log(document.cookie);
     try {
-      dispatch(updateStart);
-      const res = await axios.put(`/api/users/update/${currentUser?._id},`);
+      dispatch(updateStart());
+      console.log(formData, "formdata form data formdata");
+      const res = await axios({
+        method: "put",
+        url: `${import.meta.env.VITE_API_URL}/api/users/update/${
+          currentUser?._id
+        }`,
+        data: formData,
+      });
+      console.log(res);
     } catch (err) {
-      dispatch(updateFailure);
+      dispatch(updateFailure(err as string));
     }
   };
 

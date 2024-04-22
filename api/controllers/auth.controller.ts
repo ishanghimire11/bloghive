@@ -87,6 +87,7 @@ export const SignIn = async (
       .status(200)
       .cookie("accessToken", accessToken, {
         httpOnly: true,
+        sameSite: "none",
       })
       .json(rest);
   } catch (error: any) {
