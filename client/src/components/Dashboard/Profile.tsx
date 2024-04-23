@@ -14,7 +14,6 @@ import {
   updateFailure,
   updateStart,
 } from "@/redux/user/userSlice";
-import { UseDispatch } from "react-redux";
 
 import { signupFields } from "@/constants/constants";
 import {
