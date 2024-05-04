@@ -124,14 +124,16 @@ export const Profile = () => {
     try {
       dispatch(updateStart());
       console.log(formData, "formdata form data formdata");
-      const res = await axios({
-        method: "put",
-        url: `${import.meta.env.VITE_API_URL}/api/users/update/${
-          currentUser?._id
-        }`,
-        data: formData,
-      });
-      console.log(res);
+      // const res = await axios({
+      //   method: "put",
+      //   url: `http://localhost:3000/api/users/update/${currentUser?._id}`,
+      //   data: formData,
+      // });
+      const res = await axios.put(
+        `http://localhost:3000/api/users/update/${currentUser?._id}`,
+        { formData }
+      );
+      console.log(res, "res res res");
     } catch (err) {
       dispatch(updateFailure(err as string));
     }

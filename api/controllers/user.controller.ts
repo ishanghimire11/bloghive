@@ -11,8 +11,14 @@ export const updateUser = async (
   res: Response,
   next: NextFunction
 ) => {
+  console.log(req.user.id, "req.user.id");
+  console.log(req.params.userId, "req.params.userId");
   if (req.user.id !== req.params.userId) {
-    return next(res.status(401).json({ message: "Unauthorized" }));
+    return next(
+      res
+        .status(401)
+        .json({ message: "Unauthorized if userid and params don't match" })
+    );
   }
 
   let hashedPassword;

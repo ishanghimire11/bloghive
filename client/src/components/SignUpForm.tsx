@@ -37,29 +37,30 @@ const SignUpForm = () => {
   });
 
   const onSubmit: SubmitHandler<UserSignUp> = async (data) => {
-    dispatch(loginStart());
+    console.log("bdasknjdasjknjkadsnkjdnskjn", data);
+    // dispatch(loginStart());
 
-    try {
-      const res = await axios(
-        `${import.meta.env.VITE_API_URL}/api/auth/signup`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          data,
-        }
-      );
-      if (res.status === 200) {
-        dispatch(loginSuccess(res.data));
-        navigate("/sign-in");
-      }
-    } catch (error: any) {
-      if (error instanceof AxiosError) {
-        return dispatch(loginFailure(error.response?.data.message));
-      }
-      return dispatch(loginFailure(error.message));
-    }
+    // try {
+    //   const res = await axios(
+    //     `${import.meta.env.VITE_API_URL}/api/auth/signup`,
+    //     {
+    //       method: "POST",
+    //       headers: {
+    //         "Content-Type": "application/json",
+    //       },
+    //       data,
+    //     }
+    //   );
+    //   if (res.status === 200) {
+    //     dispatch(loginSuccess(res.data));
+    //     navigate("/sign-in");
+    //   }
+    // } catch (error: any) {
+    //   if (error instanceof AxiosError) {
+    //     return dispatch(loginFailure(error.response?.data.message));
+    //   }
+    //   return dispatch(loginFailure(error.message));
+    // }
   };
 
   return (
