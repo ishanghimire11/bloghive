@@ -17,9 +17,9 @@ import {
 
 import { signupFields } from "@/constants/constants";
 import {
-  RegisterUserSchema,
-  ValidRegisterFieldNames,
-  registerUserSchema,
+  ValidUpdateFieldNames,
+  UpdateUserSchema,
+  updateUserScheme,
 } from "@/validation/validation";
 import {
   getDownloadURL,
@@ -84,8 +84,8 @@ export const Profile = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<RegisterUserSchema>({
-    resolver: zodResolver(registerUserSchema),
+  } = useForm<UpdateUserSchema>({
+    resolver: zodResolver(updateUserScheme),
     defaultValues,
   });
 
@@ -117,18 +117,18 @@ export const Profile = () => {
     setImageFiles(selectedFile);
   };
 
-  const onSubmit: SubmitHandler<RegisterUserSchema> = async (data) => {
+  const onSubmit: SubmitHandler<UpdateUserSchema> = async (data) => {
     const userPhotoUrl = imageUrl || data.photoUrl;
 
     const formData = { ...data, photoUrl: userPhotoUrl };
     try {
       dispatch(updateStart());
       console.log(formData, "formdata form data formdata");
-      // const res = await axios({
-      //   method: "put",
-      //   url: `http://localhost:3000/api/users/update/${currentUser?._id}`,
-      //   data: formData,
-      // });
+      const res = await axios({
+        method: "put",
+        url: `http://localhost:3000/api/users/update/${currentUser?._id}`,
+        data: formData,
+      });
       const res = await axios.put(
         `http://localhost:3000/api/users/update/${currentUser?._id}`,
         { formData }
@@ -199,12 +199,12 @@ export const Profile = () => {
                 type={type}
                 className={`input input-bordered w-full`}
                 placeholder={placeholder}
-                {...register(name as ValidRegisterFieldNames)}
+                {...register(name as ValidUpdateFieldNames)}
               />
 
-              {errors[name as ValidRegisterFieldNames] && (
+              {errors[name as ValidUpdateFieldNames] && (
                 <p className="w-full mt-2 text-sm text-error">
-                  {errors[name as ValidRegisterFieldNames]?.message}
+                  {errors[name as ValidUpdateFieldNames]?.message}
                 </p>
               )}
             </label>
