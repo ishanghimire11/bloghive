@@ -46,9 +46,11 @@ const SignInForm = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          withCredentials: true,
           data,
         }
       );
+      console.log(res);
       dispatch(loginSuccess(res.data));
       navigate("/dashboard?tab=profile");
     } catch (error: any) {
