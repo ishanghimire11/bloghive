@@ -7,7 +7,7 @@ export const verifyToken = (
   next: NextFunction
 ) => {
   const token = req.cookies.accessToken;
-  console.log(token);
+  console.log(token, "tokentokentoken");
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized due to token" });

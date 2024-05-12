@@ -117,24 +117,27 @@ export const Profile = () => {
     setImageFiles(selectedFile);
   };
 
-  const onSubmit: SubmitHandler<UpdateUserSchema> = async (data) => {
-    const userPhotoUrl = imageUrl || data.photoUrl;
+  const onSubmit: SubmitHandler<UpdateUserSchema> = async (values) => {
+    const userPhotoUrl = imageUrl || values.photoUrl;
 
-    const formData = { ...data, photoUrl: userPhotoUrl };
+    console.log(userPhotoUrl);
+
+    const formData = { ...values, photoUrl: userPhotoUrl };
     try {
       dispatch(updateStart());
-      console.log(formData, "formdata form data formdata");
       const res = await axios({
         method: "put",
         url: `http://localhost:3000/api/users/update/${currentUser?._id}`,
         data: formData,
+        withCredentials: true,
       });
-      const res = await axios.put(
-        `http://localhost:3000/api/users/update/${currentUser?._id}`,
-        { formData }
-      );
-      console.log(res, "res res res");
+      console.log(res.data);
+      if (res.status === 200) {
+        dispatch(updateSuccess(res.data));
+        window.location.reload();
+      }
     } catch (err) {
+      console.log(err);
       dispatch(updateFailure(err as string));
     }
   };

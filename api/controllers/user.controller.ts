@@ -11,8 +11,7 @@ export const updateUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.user.id, "req.user.id");
-  console.log(req.params.userId, "req.params.userId");
+  console.log(req.body);
   if (req.user.id !== req.params.userId) {
     return next(
       res
@@ -22,31 +21,26 @@ export const updateUser = async (
   }
 
   let hashedPassword;
-
-  if (req.body.email) {
-    if (req.body.password) {
-      hashedPassword = await bcrypt.hash(req.body.password, 10);
-    }
-    try {
-      const updatedUser = await User.findByIdAndUpdate(
-        req.params.userId,
-        {
-          $set: {
-            username: req.body.username,
-            email: req.body.email,
-            photoUrl: req.body.imageUrl,
-            password: hashedPassword,
-          },
+  hashedPassword = await bcrypt.hash(req.body.password, 10);
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.params.userId,
+      {
+        $set: {
+          username: req.body.username,
+          email: req.body.email,
+          photoUrl: req.body.photoUrl,
+          password: hashedPassword,
         },
-        { new: true }
-      );
-      // @ts-ignore
-      const { password, ...rest } = updatedUser._doc;
-      res.status(200).json(rest);
-    } catch (err) {
-      return res.json(err);
-    }
+      },
+      { new: true }
+    );
+    console.log(updatedUser);
+    // @ts-ignore
+    const { password, ...rest } = updatedUser._doc;
+    res.status(200).json(rest);
+  } catch (err) {
+    console.log(err);
+    return res.json(err);
   }
-
-  return res.json(req.user);
 };
