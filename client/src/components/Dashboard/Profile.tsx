@@ -13,6 +13,9 @@ import {
   updateSuccess,
   updateFailure,
   updateStart,
+  deleteUserStart,
+  deleteUserFailure,
+  deleteUserSuccess,
 } from "@/redux/user/userSlice";
 
 import { signupFields } from "@/constants/constants";
@@ -27,6 +30,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
+import { useNavigate } from "react-router-dom";
 
 export const Profile = () => {
   const [imageFiles, setImageFiles] = useState<File | null>(null);
@@ -38,6 +42,7 @@ export const Profile = () => {
   const [imageUploadError, setImageUploadError] = useState<string>("");
   const [userUpdateSuccess, setUserUpdateSuccess] = useState<string>("");
   const filePickRef = useRef<HTMLInputElement | null>(null);
+  const navigate = useNavigate();
 
   const { currentUser, error, loading } = useSelector(
     (state: RootState) => state.user
@@ -90,6 +95,7 @@ export const Profile = () => {
       setTimeout(() => {
         setUserUpdateSuccess("");
       }, 3000);
+      window.location.reload();
     }
 
     if (status === "error") {
@@ -144,22 +150,43 @@ export const Profile = () => {
       dispatch(updateStart());
       const res = await axios({
         method: "put",
-        url: `http://localhost:3000/api/users/update/${currentUser?._id}`,
+        url: `${import.meta.env.VITE_API_URL}/api/users/update/${
+          currentUser?._id
+        }`,
         data: formData,
         withCredentials: true,
       });
 
-      console.log(res.data);
-
       if (res.status === 200) {
         dispatch(updateSuccess(res.data));
         handleUserUpdateAlert("success");
-        // window.location.reload();
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
       dispatch(updateFailure(err as string));
       handleUserUpdateAlert("error");
+    }
+  };
+
+  const deleteUser = async () => {
+    dispatch(deleteUserStart());
+    try {
+      const res = await axios({
+        method: "delete",
+        url: `${import.meta.env.VITE_API_URL}/api/users/delete/${
+          currentUser?._id
+        }`,
+        withCredentials: true,
+      });
+      console.log(res);
+      if (res.status === 200) {
+        dispatch(deleteUserSuccess(res.data));
+        navigate("/login");
+      }
+    } catch (err) {
+      console.error(err);
+      handleUserUpdateAlert("error");
+      dispatch(deleteUserFailure(err as string));
     }
   };
 
@@ -286,7 +313,7 @@ export const Profile = () => {
                 d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <span>Error! Account update failed.</span>
+            <span>Error occured.</span>
           </div>
         )}
         <dialog id="delete-profile" className="modal">
@@ -295,12 +322,20 @@ export const Profile = () => {
             <p className="pt-1 pb-8">
               Proceed carefully! This process can't be reversed.
             </p>
-            <div className="flex justify-end gap-x-2">
-              <form method="dialog">
-                <button className="btn btn-outline">Cancel</button>
-              </form>
+            <div className="flex items-center justify-end gap-x-2">
+              <div className="m-0 modal-action">
+                <form method="dialog">
+                  <button className="btn btn-outline">Cancel</button>
+                </form>
+              </div>
 
-              <button className="btn btn-error">Confirm</button>
+              <button
+                className="btn btn-error"
+                type="button"
+                onClick={() => deleteUser()}
+              >
+                Confirm
+              </button>
             </div>
           </div>
           <form method="dialog" className="modal-backdrop">
