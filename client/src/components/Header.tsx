@@ -93,7 +93,7 @@ const Header = () => {
               </div>
               <div className="py-2 my-2 border-y border-y-base-300">
                 <NavLink
-                  to={"/dashboard"}
+                  to={"/dashboard?tab=profile"}
                   className={
                     "p-3 inline-block w-full hover:bg-base-200 rounded-lg"
                   }
