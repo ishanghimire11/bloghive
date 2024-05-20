@@ -11,7 +11,6 @@ export const updateUser = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.body);
   if (req.user.id !== req.params.userId) {
     return next(
       res
@@ -35,10 +34,31 @@ export const updateUser = async (
       },
       { new: true }
     );
-    console.log(updatedUser);
     // @ts-ignore
     const { password, ...rest } = updatedUser._doc;
     res.status(200).json(rest);
+  } catch (err) {
+    console.log(err);
+    return res.json(err);
+  }
+};
+
+export const deleteUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  if (req.user.id !== req.params.userId) {
+    return next(
+      res
+        .status(401)
+        .json({ message: "Unauthorized. userid and params don't match" })
+    );
+  }
+
+  try {
+    await User.findByIdAndDelete(req.params.userId);
+    res.status(200).json({ message: "User deleted successfully" });
   } catch (err) {
     console.log(err);
     return res.json(err);
