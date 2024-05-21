@@ -1,24 +1,41 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { SubmitHandler, useForm } from "react-hook-form";
+import axios from "axios";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
 import { LogInIcon, LogOutIcon, Menu, Search } from "lucide-react";
+import { signOutSuccess } from "@/redux/user/userSlice";
 
 import Navlinks from "@/components/Navlinks";
 import Logo from "@/assets/logo.svg";
 import { HeaderSearch } from "@/types/types";
 
 const Header = () => {
+  const navigate = useNavigate();
   const { currentUser } = useSelector((state: RootState) => state.user);
 
   const { register, handleSubmit } = useForm<HeaderSearch>();
   const onSubmit: SubmitHandler<HeaderSearch> = (data) => console.log(data);
+  
+  const dispatch = useDispatch();
 
-  const handleLogOut = () => {
+  const handleLogOut = async () => {
     try {
-    } catch (err) {}
+      const res = await axios({
+        method: 'POST',
+        url: `${import.meta.env.VITE_API_URL}/api/users/signout`,
+        withCredentials: true,
+      });
+      console.log(res);
+      if (res.status === 200) {
+        dispatch(signOutSuccess());
+        navigate("/login");
+      }
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
